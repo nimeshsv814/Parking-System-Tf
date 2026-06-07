@@ -1,0 +1,23 @@
+t3-A-medium
+
+AWS VPC CNI - Native Pod IP routing
+CNI allocates multiple ENIs to EC2 worker nodes.
+Pods assigned secondary private IP address directly from the nodes's subnet pool
+
+AWS load balancer controller
+
+Target type : IP Mode
+- unlike traditional ingress systems using nodePorts,
+- the controller targets pods directly 
+
+establish fine grained IAM permissions at the individual pod level, removing the need for static, long lived AWS secret access keys.
+
+AWS STS - Security Token Service
+
+IRSA - - - - - 
+
+1. Provision
+2. OIDC & Drivers
+3. Controller
+4. Workloads
+

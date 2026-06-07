@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #08131d;
+  background:
+    radial-gradient(circle at top left, rgba(85, 215, 141, 0.28), transparent 32%),
+    radial-gradient(circle at top right, rgba(246, 191, 69, 0.22), transparent 24%),
+    linear-gradient(145deg, #eff7f6 0%, #e0edf3 48%, #f8f3eb 100%);
+}
+
+body {
+  @apply min-h-screen bg-transparent text-ink font-sans antialiased;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+/* ---------- UI COMPONENTS ---------- */
+
+.glass-panel {
+  @apply rounded-3xl border bg-white shadow-glow backdrop-blur-xl;
+  border-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.section-title {
+  @apply text-3xl font-semibold tracking-tight text-ink;
+}
+
+.muted-copy {
+  @apply text-sm text-slate-500;
+}
+
+/* ---------- INPUT ---------- */
+
+.input-shell {
+  @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition duration-200;
+}
+
+.input-shell:focus {
+  border-color: rgba(15, 23, 42, 0.4); /* ink/40 */
+  box-shadow: 0 0 0 2px rgba(85, 215, 141, 0.3); /* mint/30 */
+}
+
+/* ---------- BUTTONS ---------- */
+
+.button-primary {
+  @apply inline-flex items-center justify-center rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white transition duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+  background-color: #0f172a; /* slate-900 */
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center rounded-2xl border px-5 py-3 text-sm font-semibold text-ink transition duration-200;
+  border-color: rgba(15, 23, 42, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.button-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(15, 23, 42, 0.2);
+  background-color: white;
+}
+
+.button-danger {
+  @apply inline-flex items-center justify-center rounded-2xl bg-ember px-5 py-3 text-sm font-semibold text-white transition duration-200 disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.button-danger:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- STATUS ---------- */
+
+.status-dot {
+  @apply h-2.5 w-2.5 rounded-full;
+}
+
+/* ---------- LAYOUT ---------- */
+
+.page-shell {
+  @apply mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8;
+}

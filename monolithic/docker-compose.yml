@@ -1,0 +1,48 @@
+services:
+  database:
+    image: mongo:7
+    container_name: smart-parking-monolith-db
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - monolith_mongo_data:/data/db
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
+  backend:
+    build: ./backend
+    container_name: smart-parking-monolith-backend
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      PORT: 4000
+      MONGO_URI: mongodb://database:27017/smartparking
+      MONGO_CONNECT_RETRIES: "${MONGO_CONNECT_RETRIES:-10}"
+      MONGO_CONNECT_RETRY_DELAY_MS: "${MONGO_CONNECT_RETRY_DELAY_MS:-3000}"
+      JWT_SECRET: "${JWT_SECRET:-smartparking_super_secret}"
+      JWT_EXPIRES_IN: "${JWT_EXPIRES_IN:-7d}"
+      CORS_ORIGIN: "${CORS_ORIGIN:-*}"
+      INTERNAL_API_KEY: "${INTERNAL_API_KEY:-smartparking_internal_key}"
+      BOOKING_HOLD_MINUTES: "${BOOKING_HOLD_MINUTES:-10}"
+      CRON_SCHEDULE: "${CRON_SCHEDULE:-* * * * *}"
+      SEED_ADMIN_EMAIL: "${SEED_ADMIN_EMAIL:-admin@parking.com}"
+      SEED_ADMIN_PASSWORD: "${SEED_ADMIN_PASSWORD:-Admin@123}"
+      SEED_USER_EMAIL: "${SEED_USER_EMAIL:-user@parking.com}"
+      SEED_USER_PASSWORD: "${SEED_USER_PASSWORD:-User@123}"
+      RAZORPAY_KEY_ID: "${RAZORPAY_KEY_ID:-}"
+      RAZORPAY_KEY_SECRET: "${RAZORPAY_KEY_SECRET:-}"
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build: ./frontend
+    container_name: smart-parking-monolith-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  monolith_mongo_data:
