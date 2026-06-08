@@ -33,9 +33,11 @@ VITE_NOTIFICATION_SERVICE_URL=/notification
 VITE_RAZORPAY_KEY_ID=rzp_test_ShFFMxa9JkqmZu
 ENVFILE
 
-cat <<NGINXCONF > /etc/nginx/conf.d/frontend.conf
+rm -f /etc/nginx/sites-enabled/default
+
+cat <<'NGINXCONF' > /etc/nginx/conf.d/frontend.conf
 server {
-    listen 80;
+    listen 80 default_server;
     server_name _;
 
     location /auth {
@@ -83,6 +85,11 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
+    location /health {
+        return 200 'OK';
+        add_header Content-Type text/plain;
+    }
+
     location / {
         proxy_pass http://127.0.0.1:8080;
         proxy_http_version 1.1;
@@ -93,6 +100,8 @@ server {
     }
 }
 NGINXCONF
+
+nginx -t && systemctl reload nginx
 
 docker pull nimeshsv814/frontend:0c1895a17d815b17ee999d3388ad5e9f667821ee
 

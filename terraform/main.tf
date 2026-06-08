@@ -221,6 +221,12 @@ resource "aws_security_group" "app-sg" {
   description = "Security group for App tier"
   vpc_id      = aws_vpc.main.id
   ingress {
+    from_port       = var.http_port
+    to_port         = var.http_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.internalALB-sg.id]
+  }
+  ingress {
     from_port       = var.backend_from
     to_port         = var.backend_to
     protocol        = "tcp"

@@ -81,9 +81,11 @@ CORS_ORIGIN=*
 INTERNAL_API_KEY=smartparking_internal_key
 EOT
 
-cat <<NGINXCONF > /etc/nginx/conf.d/backend-proxy.conf
+rm -f /etc/nginx/sites-enabled/default
+
+cat <<'NGINXCONF' > /etc/nginx/conf.d/backend-proxy.conf
 server {
-    listen 80;
+    listen 80 default_server;
     server_name _;
 
     location /auth {
@@ -142,6 +144,8 @@ server {
     }
 }
 NGINXCONF
+
+nginx -t && systemctl reload nginx
 
 docker pull nimeshsv814/auth-service:v1.3.0
 docker pull nimeshsv814/parking-service:0d618dae7b512b578cbd3f8973d272ee2de36c51
@@ -220,7 +224,7 @@ resource "aws_lb_target_group" "web_tg" {
   vpc_id      = aws_vpc.main.id
 
   health_check {
-    path                = "/"
+    path                = "/health"
     matcher             = "200-399"
     interval            = 30
     healthy_threshold   = 3
